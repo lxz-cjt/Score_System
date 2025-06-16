@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.score_system1.mapper.ScoreLogMapper">
+
+    <!-- 插入成绩日志信息 -->
+    <insert id="insertScoreLog" parameterType="com.example.score_system1.entity.ScoreLog" useGeneratedKeys="true" keyProperty="logId">
+        INSERT INTO Score_Log (Score_id, St_id, C_id, Operation_type, Old_total_score, New_total_score, Old_credit_condition, New_credit_condition, Operation_time, Operation_user)
+        VALUES (#{scoreId}, #{stId}, #{cId}, #{operationType}, #{oldTotalScore}, #{newTotalScore}, #{oldCreditCondition}, #{newCreditCondition}, #{operationTime}, #{operationUser})
+    </insert>
+
+    <!-- 根据日志 ID 查询成绩日志信息 -->
+    <select id="selectScoreLogById" parameterType="int" resultType="com.example.score_system1.entity.ScoreLog">
+        SELECT * FROM Score_Log WHERE Log_id = #{logId}
+    </select>
+
+    <!-- 根据成绩 ID 查询成绩日志信息 -->
+    <select id="selectScoreLogsByScoreId" parameterType="String" resultType="com.example.score_system1.entity.ScoreLog">
+        SELECT * FROM Score_Log WHERE Score_id = #{scoreId}
+    </select>
+
+    <!-- 根据学生 ID 查询成绩日志信息 -->
+    <select id="selectScoreLogsByStudentId" parameterType="String" resultType="com.example.score_system1.entity.ScoreLog">
+        SELECT * FROM Score_Log WHERE St_id = #{stId}
+    </select>
+
+    <!-- 根据课程 ID 查询成绩日志信息 -->
+    <select id="selectScoreLogsByCourseId" parameterType="String" resultType="com.example.score_system1.entity.ScoreLog">
+        SELECT * FROM Score_Log WHERE C_id = #{cId}
+    </select>
+
+    <!-- 分页查询所有成绩日志信息 -->
+    <select id="selectAllScoreLogs" parameterType="map" resultType="com.example.score_system1.entity.ScoreLog">
+        SELECT * FROM Score_Log
+        ORDER BY Log_id
+    </select>
+
+</mapper>
