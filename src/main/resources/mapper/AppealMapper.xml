@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.score_system1.mapper.AppealMapper">
+
+    <!-- 插入申诉信息 -->
+    <insert id="insertAppeal" parameterType="com.example.score_system1.entity.Appeal" useGeneratedKeys="true" keyProperty="apId">
+        INSERT INTO Appeal (St_id, Aas_id, Ap_time, Ap_status, Ap_content)
+        VALUES (#{stId}, #{aasId}, #{apTime}, #{apStatus}, #{apContent})
+    </insert>
+
+    <!-- 根据申诉 ID 查询申诉信息 -->
+    <select id="selectAppealById" parameterType="String" resultType="com.example.score_system1.entity.Appeal">
+        SELECT * FROM Appeal WHERE Ap_id = #{apId}
+    </select>
+
+    <!-- 根据学生 ID 查询申诉信息 -->
+    <select id="selectAppealsByStudentId" parameterType="String" resultType="com.example.score_system1.entity.Appeal">
+        SELECT * FROM Appeal WHERE St_id = #{stId}
+    </select>
+
+    <!-- 更新申诉信息 -->
+    <update id="updateAppeal" parameterType="com.example.score_system1.entity.Appeal">
+        UPDATE Appeal
+        SET Aas_id = #{aasId}, Ap_time = #{apTime}, Ap_status = #{apStatus}, Ap_content = #{apContent}
+        WHERE Ap_id = #{apId}
+    </update>
+
+    <!-- 删除申诉信息 -->
+    <delete id="deleteAppeal" parameterType="String">
+        DELETE FROM Appeal WHERE Ap_id = #{apId}
+    </delete>
+
+    <!-- 分页查询所有申诉信息 -->
+    <select id="selectAllAppeals" parameterType="map" resultType="com.example.score_system1.entity.Appeal">
+        SELECT * FROM Appeal
+        ORDER BY Ap_id
+    </select>
+
+</mapper>
