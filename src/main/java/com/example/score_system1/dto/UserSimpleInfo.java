@@ -9,6 +9,7 @@ public class UserSimpleInfo {
     private String role; // 用户角色：admin、teacher、student
     private String name; // 用户姓名
     private String type; // 用户类型：教师、学生、管理员
+    private String id;
 
     // 无参构造函数
     public UserSimpleInfo() {}
@@ -52,4 +53,12 @@ public class UserSimpleInfo {
                 ", type='" + type + '\'' +
                 '}';
     }
-} 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+}

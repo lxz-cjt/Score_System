@@ -49,6 +49,7 @@ public class LoginService {
             Student student = studentOpt.get();
             String token = "student_token_" + student.getStudentId();
             UserSimpleInfo userInfo = new UserSimpleInfo("student", student.getStudentName(), "学生");
+            userInfo.setId(student.getStudentId());
             return LoginResponse.success(token, userInfo);
         }
 
@@ -58,6 +59,7 @@ public class LoginService {
             Teacher teacher = teacherOpt.get();
             String token = "teacher_token_" + teacher.getTeacherId();
             UserSimpleInfo userInfo = new UserSimpleInfo("teacher", teacher.getTeacherName(), "教师");
+            userInfo.setId(teacher.getTeacherId());
             return LoginResponse.success(token, userInfo);
         }
 
@@ -67,6 +69,7 @@ public class LoginService {
             AcademicAffairsStaff staff = staffOpt.get();
             String token = "staff_token_" + staff.getAcademicAffairsStaffId();
             UserSimpleInfo userInfo = new UserSimpleInfo("staff", staff.getAcademicAffairsStaffName(), "管理员");
+            userInfo.setId(staff.getAcademicAffairsStaffId());
             return LoginResponse.success(token, userInfo);
         }
 
