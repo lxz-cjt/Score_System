@@ -1,77 +1,70 @@
 package com.example.score_system1.controller;
 
+import com.example.score_system1.dto.ApiResponse;
 import com.example.score_system1.entity.ScoreLog;
 import com.example.score_system1.service.ScoreLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/score-logs")
+@RequestMapping("/api/score-logs")
 public class ScoreLogController {
 
     @Autowired
     private ScoreLogService scoreLogService;
 
     @PostMapping
-    public ResponseEntity<String> insertScoreLog(@RequestBody ScoreLog scoreLog) {
+    public ApiResponse<String> insertScoreLog(@RequestBody ScoreLog scoreLog) {
         try {
             scoreLogService.insertScoreLog(scoreLog);
-            return ResponseEntity.ok("成绩日志添加成功");
+            return ApiResponse.success("成绩日志添加成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("添加成绩日志失败: " + e.getMessage());
+            return ApiResponse.error("添加成绩日志失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/{logId}")
-    public ResponseEntity<ScoreLog> getScoreLogById(@PathVariable int logId) {
+    public ApiResponse<ScoreLog> getScoreLogById(@PathVariable int logId) {
         try {
             ScoreLog scoreLog = scoreLogService.getScoreLogById(logId);
             if (scoreLog == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ApiResponse.error("成绩日志不存在", 404);
             }
-            return ResponseEntity.ok(scoreLog);
+            return ApiResponse.success("获取成绩日志信息成功", scoreLog);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取成绩日志信息失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/score/{scoreId}")
-    public ResponseEntity<List<ScoreLog>> getScoreLogsByScoreId(@PathVariable String scoreId) {
+    public ApiResponse<List<ScoreLog>> getScoreLogsByScoreId(@PathVariable String scoreId) {
         try {
             List<ScoreLog> scoreLogs = scoreLogService.getScoreLogsByScoreId(scoreId);
-            return ResponseEntity.ok(scoreLogs);
+            return ApiResponse.success("获取成绩日志列表成功", scoreLogs);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取成绩日志列表失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/student/{stId}")
-    public ResponseEntity<List<ScoreLog>> getScoreLogsByStudentId(@PathVariable String stId) {
+    public ApiResponse<List<ScoreLog>> getScoreLogsByStudentId(@PathVariable String stId) {
         try {
             List<ScoreLog> scoreLogs = scoreLogService.getScoreLogsByStudentId(stId);
-            return ResponseEntity.ok(scoreLogs);
+            return ApiResponse.success("获取学生成绩日志列表成功", scoreLogs);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取学生成绩日志列表失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/course/{cId}")
-    public ResponseEntity<List<ScoreLog>> getScoreLogsByCourseId(@PathVariable String cId) {
+    public ApiResponse<List<ScoreLog>> getScoreLogsByCourseId(@PathVariable String cId) {
         try {
             List<ScoreLog> scoreLogs = scoreLogService.getScoreLogsByCourseId(cId);
-            return ResponseEntity.ok(scoreLogs);
+            return ApiResponse.success("获取课程成绩日志列表成功", scoreLogs);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取课程成绩日志列表失败: " + e.getMessage());
         }
     }
 }

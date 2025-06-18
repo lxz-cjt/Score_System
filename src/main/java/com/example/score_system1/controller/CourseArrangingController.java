@@ -1,88 +1,90 @@
 package com.example.score_system1.controller;
 
+import com.example.score_system1.dto.ApiResponse;
 import com.example.score_system1.entity.CourseArranging;
 import com.example.score_system1.service.CourseArrangingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/course-arrangements")
+@RequestMapping("/api/course-arrangements")
 public class CourseArrangingController {
 
     @Autowired
     private CourseArrangingService courseArrangingService;
 
     @PostMapping
-    public ResponseEntity<String> insertCourseArranging(@RequestBody CourseArranging courseArranging) {
+    public ApiResponse<String> insertCourseArranging(@RequestBody CourseArranging courseArranging) {
         try {
             courseArrangingService.insertCourseArranging(courseArranging);
-            return ResponseEntity.ok("课程安排添加成功");
+            return ApiResponse.success("课程安排添加成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("添加课程安排失败: " + e.getMessage());
+            return ApiResponse.error("添加课程安排失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ApiResponse<List<CourseArranging>> getAllCourseArrangings() {
+        try {
+            List<CourseArranging> courseArrangings = courseArrangingService.getAllCourseArrangings();
+            return ApiResponse.success("获取所有课程安排列表成功", courseArrangings);
+        } catch (Exception e) {
+            return ApiResponse.error("获取所有课程安排列表失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/{caId}")
-    public ResponseEntity<CourseArranging> getCourseArrangingById(@PathVariable String caId) {
+    public ApiResponse<CourseArranging> getCourseArrangingById(@PathVariable String caId) {
         try {
             CourseArranging courseArranging = courseArrangingService.getCourseArrangingById(caId);
             if (courseArranging == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ApiResponse.error("课程安排不存在", 404);
             }
-            return ResponseEntity.ok(courseArranging);
+            return ApiResponse.success("获取课程安排信息成功", courseArranging);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取课程安排信息失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/course/{cId}")
-    public ResponseEntity<List<CourseArranging>> getCourseArrangingsByCourseId(@PathVariable String cId) {
+    public ApiResponse<List<CourseArranging>> getCourseArrangingsByCourseId(@PathVariable String cId) {
         try {
             List<CourseArranging> courseArrangings = courseArrangingService.getCourseArrangingsByCourseId(cId);
-            return ResponseEntity.ok(courseArrangings);
+            return ApiResponse.success("获取课程安排列表成功", courseArrangings);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取课程安排列表失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/teacher/{teId}")
-    public ResponseEntity<List<CourseArranging>> getCourseArrangingsByTeacherId(@PathVariable String teId) {
+    public ApiResponse<List<CourseArranging>> getCourseArrangingsByTeacherId(@PathVariable String teId) {
         try {
             List<CourseArranging> courseArrangings = courseArrangingService.getCourseArrangingsByTeacherId(teId);
-            return ResponseEntity.ok(courseArrangings);
+            return ApiResponse.success("获取教师课程安排列表成功", courseArrangings);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取教师课程安排列表失败: " + e.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<String> updateCourseArranging(@RequestBody CourseArranging courseArranging) {
+    public ApiResponse<String> updateCourseArranging(@RequestBody CourseArranging courseArranging) {
         try {
             courseArrangingService.updateCourseArranging(courseArranging);
-            return ResponseEntity.ok("课程安排更新成功");
+            return ApiResponse.success("课程安排更新成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("更新课程安排失败: " + e.getMessage());
+            return ApiResponse.error("更新课程安排失败: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{caId}")
-    public ResponseEntity<String> deleteCourseArranging(@PathVariable String caId) {
+    public ApiResponse<String> deleteCourseArranging(@PathVariable String caId) {
         try {
             courseArrangingService.deleteCourseArranging(caId);
-            return ResponseEntity.ok("课程安排删除成功");
+            return ApiResponse.success("课程安排删除成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("删除课程安排失败: " + e.getMessage());
+            return ApiResponse.error("删除课程安排失败: " + e.getMessage());
         }
     }
 }

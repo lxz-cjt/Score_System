@@ -1,50 +1,82 @@
 package com.example.score_system1.entity;
 
-public class Student {
-    private String stId;
-    private String stName;
-    private String stMajor;
-    private int stGetCredit;
-    private String password;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 
-    public Student(String stId, String stName, String stMajor, int stGetCredit, String password) {
-        this.stId = stId;
-        this.stName = stName;
-        this.stMajor = stMajor;
-        this.stGetCredit = stGetCredit;
+/**
+ * 学生实体类
+ * 包含学生的基本信息：学号、姓名、专业、获得学分、密码
+ */
+@Entity
+@Table(name = "student",
+       uniqueConstraints = @UniqueConstraint(columnNames = "st_id"))
+public class Student {
+    
+    @Id
+    @Column(name = "st_id", length = 20, nullable = false)
+    @NotBlank(message = "学号不能为空")
+    private String studentId; // 学号
+    
+    @Column(name = "st_name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotBlank(message = "学生姓名不能为空")
+    private String studentName; // 学生姓名
+    
+    @Column(name = "st_major", length = 100, nullable = false, columnDefinition = "NVARCHAR(100)")
+    @NotBlank(message = "专业不能为空")
+    private String major; // 专业
+    
+    @Column(name = "st_get_credit", nullable = false)
+    @NotNull(message = "获得学分不能为空")
+    @Min(value = 0, message = "获得学分不能小于0")
+    private int getCredit; // 获得学分
+    
+    @Column(name = "password", length = 100, nullable = false)
+    @NotBlank(message = "密码不能为空")
+    private String password; // 密码
+
+    // 无参构造函数 - JPA需要
+    public Student() {}
+
+    public Student(String studentId, String studentName, String major, int getCredit, String password) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.major = major;
+        this.getCredit = getCredit;
         this.password = password;
     }
 
-    public String getStId() {
-        return stId;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setStId(String stId) {
-        this.stId = stId;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    public String getStName() {
-        return stName;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setStName(String stName) {
-        this.stName = stName;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
-    public String getStMajor() {
-        return stMajor;
+    public String getMajor() {
+        return major;
     }
 
-    public void setStMajor(String stMajor) {
-        this.stMajor = stMajor;
+    public void setMajor(String major) {
+        this.major = major;
     }
 
-    public int getStGetCredit() {
-        return stGetCredit;
+    public int getGetCredit() {
+        return getCredit;
     }
 
-    public void setStGetCredit(int stGetCredit) {
-        this.stGetCredit = stGetCredit;
+    public void setGetCredit(int getCredit) {
+        this.getCredit = getCredit;
     }
 
     public String getPassword() {
@@ -58,10 +90,10 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "stId='" + stId + '\'' +
-                ", stName='" + stName + '\'' +
-                ", stMajor='" + stMajor + '\'' +
-                ", stGetCredit=" + stGetCredit +
+                "studentId='" + studentId + '\'' +
+                ", studentName='" + studentName + '\'' +
+                ", major='" + major + '\'' +
+                ", getCredit=" + getCredit +
                 ", password='" + password + '\'' +
                 '}';
     }

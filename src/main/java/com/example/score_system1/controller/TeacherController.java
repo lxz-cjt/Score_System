@@ -1,77 +1,70 @@
 package com.example.score_system1.controller;
 
+import com.example.score_system1.dto.ApiResponse;
 import com.example.score_system1.entity.Teacher;
 import com.example.score_system1.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/teachers")
+@RequestMapping("/api/teachers")
 public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
 
     @PostMapping
-    public ResponseEntity<String> insertTeacher(@RequestBody Teacher teacher) {
+    public ApiResponse<String> insertTeacher(@RequestBody Teacher teacher) {
         try {
             teacherService.insertTeacher(teacher);
-            return ResponseEntity.ok("教师添加成功");
+            return ApiResponse.success("教师添加成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("添加教师失败: " + e.getMessage());
+            return ApiResponse.error("添加教师失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/{teId}")
-    public ResponseEntity<Teacher> getTeacherById(@PathVariable String teId) {
+    public ApiResponse<Teacher> getTeacherById(@PathVariable String teId) {
         try {
             Teacher teacher = teacherService.getTeacherById(teId);
             if (teacher == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ApiResponse.error("教师不存在", 404);
             }
-            return ResponseEntity.ok(teacher);
+            return ApiResponse.success("获取教师信息成功", teacher);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取教师信息失败: " + e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Teacher>> getAllTeachers() {
+    public ApiResponse<List<Teacher>> getAllTeachers() {
         try {
             List<Teacher> teachers = teacherService.getAllTeachers();
-            return ResponseEntity.ok(teachers);
+            return ApiResponse.success("获取教师列表成功", teachers);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取教师列表失败: " + e.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<String> updateTeacher(@RequestBody Teacher teacher) {
+    public ApiResponse<String> updateTeacher(@RequestBody Teacher teacher) {
         try {
             teacherService.updateTeacher(teacher);
-            return ResponseEntity.ok("教师信息更新成功");
+            return ApiResponse.success("教师信息更新成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("更新教师信息失败: " + e.getMessage());
+            return ApiResponse.error("更新教师信息失败: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{teId}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable String teId) {
+    public ApiResponse<String> deleteTeacher(@PathVariable String teId) {
         try {
             teacherService.deleteTeacher(teId);
-            return ResponseEntity.ok("教师删除成功");
+            return ApiResponse.success("教师删除成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("删除教师失败: " + e.getMessage());
+            return ApiResponse.error("删除教师失败: " + e.getMessage());
         }
     }
 }

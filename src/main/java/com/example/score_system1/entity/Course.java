@@ -1,77 +1,72 @@
 package com.example.score_system1.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+
+/**
+ * 课程实体类
+ * 包含课程的基本信息：课程编号、课程名称、学分等
+ */
+@Entity
+@Table(name = "course",
+       uniqueConstraints = @UniqueConstraint(columnNames = "c_id"))
 public class Course {
-    private String cId;
-    private String cName;
-    private short cCredit;
+    
+    @Id
+    @Column(name = "c_id", length = 20, nullable = false)
+    @NotBlank(message = "课程编号不能为空")
+    private String courseId; // 课程编号
+    
+    @Column(name = "c_name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotBlank(message = "课程名称不能为空")
+    private String courseName; // 课程名称
+    
+    @Column(name = "c_credit", nullable = false)
+    @NotNull(message = "学分不能为空")
+    @Min(value = 1, message = "学分必须大于0")
+    private short courseCredit; // 课程学分
 
-    public Long id;
-    public String courseCode;
-    public String courseName;
-    public String teachername;
-    public short credits;
-    public String coursetype;
-    public String schedule;
-    public String classroom;
-    public int capacity;
-    public int enrolled;
+    // 无参构造函数 - JPA需要
+    public Course() {}
 
-    //  id: 1,
-    //      courseCode: 'CS101',
-    //      courseName: '计算机程序设计基础',
-    //      teacherName: '李教授',
-    //      credits: 4,
-    //      courseType: 'required',
-    //      schedule: '周一 1-2节，周三 3-4节',
-    //      classroom: '计算机楼101',
-    //      capacity: 60,
-    //      enrolled: 45
-
-
-
-    public Course(String cId, String cName, short cCredit) {
-        this.cId = cId;
-        this.cName = cName;
-        this.cCredit = cCredit;
+    public Course(String courseId, String courseName, short courseCredit) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseCredit = courseCredit;
     }
 
-    public String getcId() {
-        return cId;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setcId(String cId) {
-        this.cId = cId;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
-    public String getcName() {
-        return cName;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public short getcCredit() {
-        return cCredit;
+    public short getCourseCredit() {
+        return courseCredit;
     }
 
-    public void setcCredit(short cCredit) {
-        this.cCredit = cCredit;
-    }
-
-    public void setCourseCode(String cId) {
-        this.courseCode = cId;
-    }
-    public void setCourseName(String cName) {
-        this.courseName = this.cName;
+    public void setCourseCredit(short courseCredit) {
+        this.courseCredit = courseCredit;
     }
 
     @Override
     public String toString() {
         return "Course{" +
-                "cId='" + cId + '\'' +
-                ", cName='" + cName + '\'' +
-                ", cCredit=" + cCredit +
+                "courseId='" + courseId + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseCredit=" + courseCredit +
                 '}';
     }
 }

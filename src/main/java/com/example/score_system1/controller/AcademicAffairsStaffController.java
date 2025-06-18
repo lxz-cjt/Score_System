@@ -1,77 +1,70 @@
 package com.example.score_system1.controller;
 
+import com.example.score_system1.dto.ApiResponse;
 import com.example.score_system1.entity.AcademicAffairsStaff;
 import com.example.score_system1.service.AcademicAffairsStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/academic-affairs-staff")
+@RequestMapping("/api/academic-affairs-staff")
 public class AcademicAffairsStaffController {
 
     @Autowired
     private AcademicAffairsStaffService academicAffairsStaffService;
 
     @PostMapping
-    public ResponseEntity<String> insertAcademicAffairsStaff(@RequestBody AcademicAffairsStaff staff) {
+    public ApiResponse<String> insertAcademicAffairsStaff(@RequestBody AcademicAffairsStaff staff) {
         try {
             academicAffairsStaffService.insertAcademicAffairsStaff(staff);
-            return ResponseEntity.ok("教务人员添加成功");
+            return ApiResponse.success("教务人员添加成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("添加教务人员失败: " + e.getMessage());
+            return ApiResponse.error("添加教务人员失败: " + e.getMessage());
         }
     }
 
     @GetMapping("/{aasId}")
-    public ResponseEntity<AcademicAffairsStaff> getAcademicAffairsStaffById(@PathVariable String aasId) {
+    public ApiResponse<AcademicAffairsStaff> getAcademicAffairsStaffById(@PathVariable String aasId) {
         try {
             AcademicAffairsStaff staff = academicAffairsStaffService.getAcademicAffairsStaffById(aasId);
             if (staff == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ApiResponse.error("教务人员不存在", 404);
             }
-            return ResponseEntity.ok(staff);
+            return ApiResponse.success("获取教务人员信息成功", staff);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取教务人员信息失败: " + e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<AcademicAffairsStaff>> getAllAcademicAffairsStaffs() {
+    public ApiResponse<List<AcademicAffairsStaff>> getAllAcademicAffairsStaffs() {
         try {
             List<AcademicAffairsStaff> staffs = academicAffairsStaffService.getAllAcademicAffairsStaffs();
-            return ResponseEntity.ok(staffs);
+            return ApiResponse.success("获取教务人员列表成功", staffs);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ApiResponse.error("获取教务人员列表失败: " + e.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<String> updateAcademicAffairsStaff(@RequestBody AcademicAffairsStaff staff) {
+    public ApiResponse<String> updateAcademicAffairsStaff(@RequestBody AcademicAffairsStaff staff) {
         try {
             academicAffairsStaffService.updateAcademicAffairsStaff(staff);
-            return ResponseEntity.ok("教务人员信息更新成功");
+            return ApiResponse.success("教务人员信息更新成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("更新教务人员信息失败: " + e.getMessage());
+            return ApiResponse.error("更新教务人员信息失败: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{aasId}")
-    public ResponseEntity<String> deleteAcademicAffairsStaff(@PathVariable String aasId) {
+    public ApiResponse<String> deleteAcademicAffairsStaff(@PathVariable String aasId) {
         try {
             academicAffairsStaffService.deleteAcademicAffairsStaff(aasId);
-            return ResponseEntity.ok("教务人员删除成功");
+            return ApiResponse.success("教务人员删除成功");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("删除教务人员失败: " + e.getMessage());
+            return ApiResponse.error("删除教务人员失败: " + e.getMessage());
         }
     }
 }
