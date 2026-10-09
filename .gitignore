@@ -1,10 +1,29 @@
-HELP.md
+# ===== 后端（Java / Maven） =====
 target/
-.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# ===== 前端（Node / Vite） =====
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# ===== 本地环境配置（含敏感信息，禁止提交） =====
+**/application-local.yml
+**/application-local.properties
+.env
+.env.*
+!.env.example
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ===== Eclipse / STS =====
 .apt_generated
 .classpath
 .factorypath
@@ -13,22 +32,22 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# ===== NetBeans =====
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# ===== VS Code =====
 .vscode/
-target
+
+# ===== 操作系统 =====
+.DS_Store
+Thumbs.db
+
+# ===== 日志与临时文件 =====
+*.log
+logs/
