@@ -218,6 +218,7 @@ docker compose up -d
 - [ ] 接口级权限拦截（当前权限控制在前端路由守卫）
 - [ ] Redis 缓存 Dashboard 统计数据
 - [ ] Dockerfile 与应用镜像打包部署
+- [ ] 支持 Excel 批量导入成绩
 
 ## License
 
