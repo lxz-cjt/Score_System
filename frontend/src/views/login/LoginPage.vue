@@ -59,6 +59,7 @@ import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import { login } from '../../api/auth'
 import { useUserStore } from '../../store/user'
+import { ROLE_HOME } from '../../router'
 
 const router = useRouter()
 const route = useRoute()
@@ -85,7 +86,7 @@ const handleLogin = async () => {
     const { data } = await login(form)
     userStore.setLogin(data.token, data.user)
     ElMessage.success(`欢迎回来，${data.user.name}`)
-    const redirect = route.query.redirect || `/${data.user.role}`
+    const redirect = route.query.redirect || ROLE_HOME[data.user.role] || '/'
     router.push(redirect)
   } finally {
     loading.value = false

@@ -1,6 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '../store/user'
 
+/** 角色 -> 首页路径映射 */
+export const ROLE_HOME = {
+  student: '/student',
+  teacher: '/teacher',
+  staff: '/admin'
+}
+
+const roleHome = (role) => ROLE_HOME[role] || '/login'
+
 /**
  * 路由表：meta.roles 声明可访问角色，未登录访问受限页面会跳转登录页
  */
@@ -16,7 +25,7 @@ const routes = [
     component: () => import('../layout/AdminLayout.vue'),
     redirect: () => {
       const userStore = useUserStore()
-      return `/${userStore.role || 'student'}`
+      return roleHome(userStore.role)
     },
     children: [
       // ==================== 学生端 ====================
@@ -145,7 +154,7 @@ router.beforeEach((to) => {
   }
   if (to.meta.roles && !to.meta.roles.includes(userStore.role)) {
     // 无权访问时跳回自己的首页
-    return `/${userStore.role}`
+    return roleHome(userStore.role)
   }
   return true
 })
